@@ -1,14 +1,15 @@
 import { Add, Remove } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-import {userRequest} from "../axiosService";
+import { userRequest } from "../axiosService";
 import StripeCheckout from "react-stripe-checkout";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { changeQuantityofProduct } from "../redux/cartSlice";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -24,38 +25,10 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-`;
-
-const TopButton = styled.button`
-  padding: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  border: ${(props) => props.type === "filled" && "none"};
-  background-color: ${(props) =>
-    props.type === "filled" ? "black" : "transparent"};
-  color: ${(props) => props.type === "filled" && "white"};
-`;
-
-const TopTexts = styled.div`
-  ${mobile({ display: "none" })}
-`;
-const TopText = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-  margin: 0px 10px;
-`;
-
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   ${mobile({ flexDirection: "column" })}
-
-
 `;
 
 const Info = styled.div`
@@ -66,7 +39,6 @@ const Product = styled.div`
   display: flex;
   justify-content: space-between;
   ${mobile({ flexDirection: "column" })}
-
 `;
 
 const ProductDetail = styled.div`
@@ -116,14 +88,12 @@ const ProductAmount = styled.div`
   font-size: 24px;
   margin: 5px;
   ${mobile({ margin: "5px 15px" })}
-
 `;
 
 const ProductPrice = styled.div`
   font-size: 30px;
   font-weight: 200;
   ${mobile({ marginBottom: "20px" })}
-
 `;
 
 const Hr = styled.hr`
@@ -165,79 +135,103 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const Spacing = styled.div`
+height: 40vh;
+`;
+
 const Cart = () => {
-  const cart = useSelector(state => state.cart);
-  const [stripeToken , setStripeToken] = useState(null);
+  const cart = useSelector((state) => state.cart);
+  const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
   const onToken = (token) => {
     setStripeToken(token);
+  };
+
+  const handleCart = () =>{
+    userRequest.post("/addcart",cart);
   }
 
   useEffect(() => {
     const makePaymentRequest = async () => {
-      try{
-        const res = await userRequest.post('/pay',{tokenId:stripeToken.id,amount:cart.total*100});
-        history.push('/success',{data:res.data});
-      }catch{}
+      try {
+        const res = await userRequest.post("/pay", {
+          tokenId: stripeToken.id,
+          amount: cart.total * 100,
+        });
+        history.push("/success",{data:res.data});
+      } catch {}
     };
-    stripeToken && cart.total>=1 && makePaymentRequest();
-  
-   
-  }, [stripeToken,cart.total,history])
-  
+    stripeToken && cart.total >= 1 && makePaymentRequest();
+  }, [stripeToken, cart.total, history]);
+
+  const dispatch = useDispatch();
+
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
-        <Title>YOUR BAG</Title>
-        {/* <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
-          </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
-        </Top> */}
+        <Title>
+          {" "}
+          {cart.total === 0 ? "YOUR BAG IS EMPTY, SHOP NOW" : "YOUR BAG"}
+        </Title>
         <Bottom>
           <Info>
-            {cart.products.map(product => 
-            <div>
-            <Product key={product._id}>
-              <ProductDetail>
-                <Image src={product.img} />
-                <Details>
-                  <ProductName>
-                    <b>Product:</b> {product.title}
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> {product._id}
-                  </ProductId>
-                  <ProductColor color={product.color} />
-                  <ProductSize>
-                    <b>Size:</b> {product.size}
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  {/* <Add /> */}
-                  <ProductAmount>Quantity: {product.quantity}</ProductAmount>
-                  {/* <Remove /> */}
-                </ProductAmountContainer>
-                <ProductPrice>$ {product.price*product.quantity}</ProductPrice>
-              </PriceDetail>
-              
-            </Product>
-          <Hr />
-          </div>
-
-         )
-
-            }
-          
+            {cart.products.map((product,index) => (
+              <div key={index}>
+                <Product key={product._id}>
+                  <ProductDetail>
+                    <Image src={product.img} />
+                    <Details>
+                      <ProductName>
+                        <b>Product:</b> {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {product._id}
+                      </ProductId>
+                      <ProductColor color={product.color} />
+                      <ProductSize>
+                        <b>Size:</b> {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetail>
+                  <PriceDetail>
+                    <ProductAmountContainer>
+                      <Add
+                        onClick={() =>
+                          dispatch(
+                            changeQuantityofProduct({
+                              type: "Add",
+                              _id: product._id,
+                            })
+                          )
+                        }
+                      />
+                      <ProductAmount>
+                        Quantity: {product.quantity}
+                      </ProductAmount>
+                      <Remove
+                        onClick={() =>
+                          dispatch(
+                            changeQuantityofProduct({
+                              type: "Reduce",
+                              _id: product._id,
+                            })
+                          )
+                        }
+                      />
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      $ {product.price * product.quantity}
+                    </ProductPrice>
+                  </PriceDetail>
+                </Product>
+                <Hr />
+              </div>
+            ))}
           </Info>
-          <Summary>
+          {cart.total !== 0 ? (
+            <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
@@ -256,17 +250,19 @@ const Cart = () => {
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
-            name="Stripe Payment"
-            billingAddress
-            shippingAddress
-            description={`Your total is $${cart.total}`}
-            amount={cart.total*100}
-            token = {onToken}
-            stripeKey = {KEY}>
-
-            <Button>CHECKOUT NOW</Button>
+              name="Stripe Payment"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.total}`}
+              amount={cart.total * 100}
+              token={onToken}
+              stripeKey={KEY}
+            >
+              <Button onClick={handleCart}>CHECKOUT NOW</Button>
             </StripeCheckout>
           </Summary>
+          ) : ( <Spacing />)}
+          
         </Bottom>
       </Wrapper>
       <Footer />

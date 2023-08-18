@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { sliderItems } from "../data";
 import { mobile } from "../responsive";
-
+import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -12,7 +12,6 @@ const Container = styled.div`
   position: relative;
   overflow: hidden;
   ${mobile({ display: "none" })}
-
 `;
 
 const Arrow = styled.div`
@@ -91,6 +90,8 @@ const Slider = () => {
     }
   };
 
+  const history = useHistory();
+
   return (
     <Container>
       <Arrow direction="left" onClick={() => handleClick("left")}>
@@ -105,7 +106,9 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button>SHOW NOW</Button>
+              <Button onClick={() => history.push("/products")}>
+                SHOW NOW
+              </Button>
             </InfoContainer>
           </Slide>
         ))}

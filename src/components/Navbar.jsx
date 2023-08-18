@@ -1,15 +1,14 @@
 import { Badge } from "@material-ui/core";
-import { Search, ShoppingCartOutlined } from "@material-ui/icons";
+import { History, ListAlt, ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
   ${mobile({ height: "50px" })}
-
 `;
 
 const Wrapper = styled.div`
@@ -18,7 +17,6 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   ${mobile({ padding: "10px 4px" })}
-
 `;
 
 const Left = styled.div`
@@ -27,27 +25,10 @@ const Left = styled.div`
   align-items: left;
 `;
 
-
-const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
-  display: flex;
-  align-items: center;
-  margin-left: 25px;
-  padding: 5px;
-`;
-
-const Input = styled.input`
-border:none;
-${mobile({ width: "50px" })}
-
-`;
-
-
 const Logo = styled.h1`
   font-weight: bold;
   color: red;
   ${mobile({ fontSize: "20px" })}
-
 `;
 const Right = styled.div`
   flex: 1;
@@ -55,7 +36,6 @@ const Right = styled.div`
   align-items: center;
   justify-content: flex-end;
   ${mobile({ flex: 4, justifyContent: "center" })}
-
 `;
 
 const MenuItem = styled.div`
@@ -63,47 +43,68 @@ const MenuItem = styled.div`
   cursor: pointer;
   margin-left: 25px;
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
-
 `;
 
 const Navbar = () => {
-  const quantity = useSelector(state=> state.cart.cartQuantity);
-  const activeUser = useSelector(state => state.user.currentUser);
+  const quantity = useSelector((state) => state.cart.cartQuantity);
+  const activeUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const handleSignOut = () => {
+    dispatch({ type: "SIGNOUT_REQUEST" });
+  };
   return (
     <Container>
       <Wrapper>
-    
-        <Left>
-        <Logo>RED</Logo>
-          <Logo style={{color:"black"}}>STORE</Logo>
-  
-   </Left>
+        <Link to="/" style={{ textDecorationLine: "none" }}>
+          <Left>
+            <Logo>RED</Logo>
+            <Logo style={{ color: "black" }}>STORE</Logo>
+          </Left>
+        </Link>
         <Right>
-        {/* <SearchContainer>
-       <Input placeholder="Search" />
-       <Search style={{ color: "gray", fontSize: 16 }} />
-     </SearchContainer> */}
-          {     activeUser &&     
-             <>{activeUser.doc.name}</>
-         }
-     {     !activeUser &&     
-          <Link to="/register">
-          <MenuItem>REGISTER</MenuItem>
+          {activeUser && (
+            <>
+              <span>{activeUser.doc.name}</span>
+              <MenuItem onClick={handleSignOut}>LOGOUT</MenuItem>
+            </>
+          )}
+          {!activeUser && (
+            <Link to="/register" style={{ textDecorationLine: "none" }}>
+              <MenuItem>REGISTER</MenuItem>
+            </Link>
+          )}
+          {!activeUser && (
+            <Link to="/login" style={{ textDecorationLine: "none" }}>
+              <MenuItem>SIGN IN</MenuItem>
+            </Link>
+          )}
+          {activeUser && (
+<>
+            <Link to="/cart" style={{ textDecorationLine: "none" }}>
+            <MenuItem>
+              <Badge
+                overlap="rectangular"
+                badgeContent={quantity}
+                color="primary"
+                >
+                <ShoppingCartOutlined />
+              </Badge>
+            </MenuItem>
           </Link>
-      }
-      {
-        !activeUser && 
-          <Link to="/login">
-          <MenuItem>SIGN IN</MenuItem>
-          </Link>  
-      }
-          <Link to="/cart">
-          <MenuItem>
-            <Badge overlap="rectangular" badgeContent={quantity} color="primary">
-              <ShoppingCartOutlined />
-            </Badge>
-          </MenuItem>
-          </Link>
+
+<Link to="/orders" style={{ textDecorationLine: "none" }}>
+<MenuItem>
+  <Badge
+    overlap="rectangular"
+    
+    color="primary"
+    >
+    <ListAlt />
+  </Badge>
+</MenuItem>
+</Link>
+</>
+                )}
         </Right>
       </Wrapper>
     </Container>

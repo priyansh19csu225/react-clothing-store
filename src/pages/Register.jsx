@@ -73,9 +73,9 @@ history.push('/login');
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="username" type="text" onChange={(e)=> setPassword(e.target.value)}/>
+          <Input placeholder="username" type="text" onChange={(e)=> setName(e.target.value)}/>
           <Input placeholder="email" type="email" onChange={(e)=> setEmail(e.target.value)}/>
-          <Input placeholder="password" type="password" onChange={(e)=> setName(e.target.value)}/>
+          <Input placeholder="password" type="password" onChange={(e)=> setPassword(e.target.value)}/>
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>

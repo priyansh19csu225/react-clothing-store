@@ -24,7 +24,6 @@ const Wrapper = styled.div`
   padding: 20px;
   background-color: white;
   ${mobile({ width: "75%" })}
-
 `;
 
 const Title = styled.h1`
@@ -52,40 +51,44 @@ const Button = styled.button`
   color: white;
   cursor: pointer;
   margin-bottom: 10px;
-  &:disabled{
-    color:green;
-    cursor:not-allowed;
+  &:disabled {
+    color: green;
+    cursor: not-allowed;
   }
 `;
 
-// const Link = styled.a`
-//   margin: 5px 0px;
-//   font-size: 12px;
-//   text-decoration: underline;
-//   cursor: pointer;
-// `;
 const Error = styled.span`
-color:red;
+  color: red;
 `;
 const Login = () => {
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const {isPending , error} = useSelector(state => state.user);
+  const { isPending, error } = useSelector((state) => state.user);
   const handleLogin = (e) => {
     e.preventDefault();
-login(dispatch,{email,password});
-  }
+    login(dispatch, { email, password });
+  };
   return (
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
         <Form>
-          <Input placeholder="email" type="email" onChange={(e)=> setEmail(e.target.value)} />
-          <Input placeholder="password" type="password" onChange={(e)=> setPassword(e.target.value)}/>
-          <Button onClick={handleLogin} disabled={isPending}>LOGIN</Button>
-{     error &&     <Error>Something Went Wrong!!</Error>}
-          {/* <Link>DO'NT REMEMBER THE PASSWORD?</Link> */}
+          <Input
+            placeholder="email"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            placeholder="password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button onClick={handleLogin} disabled={isPending}>
+            LOGIN
+          </Button>
+          {error && <Error>Something Went Wrong!!</Error>}
+
           <Link to="/register">CREATE A NEW ACCOUNT</Link>
         </Form>
       </Wrapper>

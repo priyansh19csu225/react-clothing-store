@@ -55,12 +55,6 @@ const ProductList = () => {
       [event.target.name]: event.target.value.toLowerCase()
     })
   }
-  // useEffect(
-  //   ()=>{
-
-  //   }
-
-  // ,[cat]);
   return (
     <Container>
       <Navbar />
