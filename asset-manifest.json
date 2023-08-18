@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/react-clothing-store/static/js/main.90f3444e.chunk.js",
-    "main.js.map": "/react-clothing-store/static/js/main.90f3444e.chunk.js.map",
+    "main.js": "/react-clothing-store/static/js/main.95f39490.chunk.js",
+    "main.js.map": "/react-clothing-store/static/js/main.95f39490.chunk.js.map",
     "runtime-main.js": "/react-clothing-store/static/js/runtime-main.400eec5f.js",
     "runtime-main.js.map": "/react-clothing-store/static/js/runtime-main.400eec5f.js.map",
-    "static/js/2.ebd2ea82.chunk.js": "/react-clothing-store/static/js/2.ebd2ea82.chunk.js",
-    "static/js/2.ebd2ea82.chunk.js.map": "/react-clothing-store/static/js/2.ebd2ea82.chunk.js.map",
+    "static/js/2.c1955f9a.chunk.js": "/react-clothing-store/static/js/2.c1955f9a.chunk.js",
+    "static/js/2.c1955f9a.chunk.js.map": "/react-clothing-store/static/js/2.c1955f9a.chunk.js.map",
     "index.html": "/react-clothing-store/index.html",
-    "static/js/2.ebd2ea82.chunk.js.LICENSE.txt": "/react-clothing-store/static/js/2.ebd2ea82.chunk.js.LICENSE.txt"
+    "static/js/2.c1955f9a.chunk.js.LICENSE.txt": "/react-clothing-store/static/js/2.c1955f9a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.400eec5f.js",
-    "static/js/2.ebd2ea82.chunk.js",
-    "static/js/main.90f3444e.chunk.js"
+    "static/js/2.c1955f9a.chunk.js",
+    "static/js/main.95f39490.chunk.js"
   ]
 }
