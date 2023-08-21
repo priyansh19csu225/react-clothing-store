@@ -1,12 +1,7 @@
-# To run this App
 
-Clone this repository on your local machine
+Open [https://adorable-cobbler-89e386.netlify.app/](https://redstore-clothing.netlify.app/) to view it in browser.
 
-## use `npm start` or `yarn start` after `npm install` command
-
-Open [https://adorable-cobbler-89e386.netlify.app/](https://adorable-cobbler-89e386.netlify.app/) to view it in browser.
-
-The backend of project is deployed on heroku and application is connected directly to it.
+Backend source code link : https://github.com/priyansh19csu225/react-clothing-store-backend
 
 ##few screenshots of program
 
