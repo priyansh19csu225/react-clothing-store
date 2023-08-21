@@ -1,5 +1,5 @@
 
-Open [https://adorable-cobbler-89e386.netlify.app/](https://redstore-clothing.netlify.app/) to view it in browser.
+Open [https://redstore-clothing.netlify.app/](https://redstore-clothing.netlify.app/) to view it in browser.
 
 Backend source code link : https://github.com/priyansh19csu225/react-clothing-store-backend
 
